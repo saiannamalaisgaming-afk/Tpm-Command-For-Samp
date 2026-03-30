@@ -1,0 +1,32 @@
+new Float:gMarkerX[MAX_PLAYERS];
+new Float:gMarkerY[MAX_PLAYERS];
+
+public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+{
+    gMarkerX[playerid] = fX;
+    gMarkerY[playerid] = fY;
+    return 1;
+}
+
+CMD:tpm(playerid, params[])
+{
+    if (pData[playerid][pAdmin] < 1)
+    {
+        SendClientMessage(playerid, 0xFF0000FF, "ERROR: You are not authorized to use this command!");
+        return 1;
+    }
+
+    if (gMarkerX[playerid] == 0.0 && gMarkerY[playerid] == 0.0)
+    {
+        SendClientMessage(playerid, 0xFF0000FF, "ERROR: Click on the map first to set a marker!");
+        return 1;
+    }
+
+    SetPlayerPos(playerid, gMarkerX[playerid], gMarkerY[playerid], 5.0);
+    SetPlayerInterior(playerid, 0);
+    SetPlayerVirtualWorld(playerid, 0);
+
+    SendClientMessage(playerid, 0x00FF00FF, "Teleported to your map marker!");
+    return 1;
+}
+
